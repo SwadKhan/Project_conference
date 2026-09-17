@@ -3,37 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Port Authority &mdash; Offline Ship Credential</title>
-
-    <!-- Installable offline app -->
-    <link rel="manifest" href="manifest.webmanifest">
-    <meta name="theme-color" content="#0b1b3a">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Port Auth">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <link rel="icon" href="icons/icon-192.png" type="image/png">
-
+    <title>Port Authority &mdash; Ship Credential</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9'%3E%3Crect width='9' height='9' fill='%230b1b3a'/%3E%3Cg fill='%23fff'%3E%3Cpath d='M1 1h3v3H1z M5 1h3v3H5z M1 5h3v3H1z'/%3E%3C/g%3E%3Cg fill='%230b1b3a'%3E%3Cpath d='M2 2h1v1H2z M6 2h1v1H6z M2 6h1v1H2z'/%3E%3C/g%3E%3Crect x='5' y='5' width='1' height='1' fill='%23fff'/%3E%3Crect x='7' y='7' width='1' height='1' fill='%23fff'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
     <header class="app-header no-print">
-        <div class="header-row">
-            <div>
-                <h1>Port Authority</h1>
-                <p class="subtitle">Offline ship credential issuing &mdash; Page 1</p>
-            </div>
-            <button type="button" id="install" class="ghost-button" hidden>Install app</button>
-        </div>
-        <p id="offline-status" class="status status-pending">Checking offline cache&hellip;</p>
+        <h1>Port Authority</h1>
+        <p class="subtitle">Ship credential issuing &mdash; Page 1</p>
     </header>
 
     <main>
         <!-- ---------------------------------------------------------------
              Input: one field, one button.
-             The button calls windows.start() (see js/app.js).
+             The button calls windows.start(), which is YOURS to define -
+             see the script at the bottom of this file. Whatever it puts
+             into #result becomes the QR code.
         ---------------------------------------------------------------- -->
         <section class="card no-print">
             <label for="ship">Ship ID</label>
@@ -45,37 +31,25 @@
             </button>
 
             <p id="error" class="error" hidden></p>
-            <p class="hint">
-                Runs fully offline. The signing key never leaves this computer.
-            </p>
         </section>
 
         <!-- ---------------------------------------------------------------
              Output: the printable credential. Everything inside #printable
-             is what the printer puts on paper.
+             is what the printer puts on paper. It appears as soon as
+             #result has content.
         ---------------------------------------------------------------- -->
         <section id="printable" class="card credential" hidden>
             <h2 class="credential-title">Ship Clearance Credential</h2>
 
             <div id="qr-container" class="qr-container"></div>
 
-            <dl class="meta">
-                <dt>Ship ID</dt>      <dd id="meta-ship">&mdash;</dd>
-                <dt>Port</dt>         <dd id="meta-port">&mdash;</dd>
-                <dt>Issued</dt>       <dd id="meta-issued">&mdash;</dd>
-                <dt>Expires</dt>      <dd id="meta-expires">&mdash;</dd>
-                <dt>Signing key</dt>  <dd id="meta-kid">&mdash;</dd>
-            </dl>
-
-            <!-- The signed token. This exact string is the QR payload.
-                 It is editable: any change here re-renders the QR above. -->
+            <!-- The QR payload. Editable: any change re-renders the code. -->
             <div id="result" class="token" contenteditable="plaintext-only"
                  spellcheck="false" role="textbox" aria-multiline="false"
-                 aria-label="Credential token (editable)"></div>
+                 aria-label="Credential value (editable)"></div>
 
-            <p id="result-warning" class="warning no-print" hidden></p>
             <p class="hint no-print">
-                The token is editable &mdash; the QR code follows it as you type.
+                Editable &mdash; the QR code follows this value as you type.
             </p>
 
             <button type="button" id="qr-print" class="no-print">
@@ -85,9 +59,31 @@
     </main>
 
     <!-- Vendored from github.com/hamzaharoon1314/QR-Code-Scan (MIT, Kazuhiko Arase) -->
-    <script src="version.js"></script>
     <script src="js/qrcode.js"></script>
     <script src="js/qrcode_UTF8.js"></script>
     <script src="js/app.js"></script>
+
+    <!-- ===============================================================
+         YOUR start(). app.js does not define it: it only renders
+         whatever lands in #result. Put the value there and the QR
+         appears. Replace the body of this function with your own
+         lookup, signing, database call - whatever the credential is.
+         =============================================================== -->
+    <script>
+        window.start = function () {
+            const shipId = document.getElementById('ship').value.trim();
+            const error = document.getElementById('error');
+
+            if (!shipId) {
+                error.textContent = 'Enter a Ship ID first.';
+                error.hidden = false;
+                return;
+            }
+            error.hidden = true;
+
+            // Whatever you assign here is what the QR code carries.
+            document.getElementById('result').textContent = shipId;
+        };
+    </script>
 </body>
 </html>
