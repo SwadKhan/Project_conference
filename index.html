@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port Authority &mdash; Offline Ship Credential</title>
+
+    <!-- Installable offline app -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0b1b3a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Port Auth">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="icon" href="icons/icon-192.png" type="image/png">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="app-header no-print">
+        <div class="header-row">
+            <div>
+                <h1>Port Authority</h1>
+                <p class="subtitle">Offline ship credential issuing &mdash; Page 1</p>
+            </div>
+            <button type="button" id="install" class="ghost-button" hidden>Install app</button>
+        </div>
+        <p id="offline-status" class="status status-pending">Checking offline cache&hellip;</p>
+    </header>
+
+    <main>
+        <!-- ---------------------------------------------------------------
+             Input: one field, one button.
+             The button calls windows.start() (see js/app.js).
+        ---------------------------------------------------------------- -->
+        <section class="card no-print">
+            <label for="ship">Ship ID</label>
+            <input id="ship" type="text" autocomplete="off" spellcheck="false"
+                   placeholder="e.g. IMO9074729">
+
+            <button type="button" id="issue" onclick="windows.start()">
+                Issue credential
+            </button>
+
+            <p id="error" class="error" hidden></p>
+            <p class="hint">
+                Runs fully offline. The signing key never leaves this computer.
+            </p>
+        </section>
+
+        <!-- ---------------------------------------------------------------
+             Output: the printable credential. Everything inside #printable
+             is what the printer puts on paper.
+        ---------------------------------------------------------------- -->
+        <section id="printable" class="card credential" hidden>
+            <h2 class="credential-title">Ship Clearance Credential</h2>
+
+            <div id="qr-container" class="qr-container"></div>
+
+            <dl class="meta">
+                <dt>Ship ID</dt>      <dd id="meta-ship">&mdash;</dd>
+                <dt>Port</dt>         <dd id="meta-port">&mdash;</dd>
+                <dt>Issued</dt>       <dd id="meta-issued">&mdash;</dd>
+                <dt>Expires</dt>      <dd id="meta-expires">&mdash;</dd>
+                <dt>Signing key</dt>  <dd id="meta-kid">&mdash;</dd>
+            </dl>
+
+            <!-- The signed token. This exact string is the QR payload.
+                 It is editable: any change here re-renders the QR above. -->
+            <div id="result" class="token" contenteditable="plaintext-only"
+                 spellcheck="false" role="textbox" aria-multiline="false"
+                 aria-label="Credential token (editable)"></div>
+
+            <p id="result-warning" class="warning no-print" hidden></p>
+            <p class="hint no-print">
+                The token is editable &mdash; the QR code follows it as you type.
+            </p>
+
+            <button type="button" id="qr-print" class="no-print">
+                Print credential
+            </button>
+        </section>
+    </main>
+
+    <!-- Vendored from github.com/hamzaharoon1314/QR-Code-Scan (MIT, Kazuhiko Arase) -->
+    <script src="version.js"></script>
+    <script src="js/qrcode.js"></script>
+    <script src="js/qrcode_UTF8.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
