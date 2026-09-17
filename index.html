@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port &mdash; Authentication</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9'%3E%3Crect width='9' height='9' fill='%230b1b3a'/%3E%3Cg fill='%23fff'%3E%3Cpath d='M1 1h3v3H1z M5 1h3v3H5z M1 5h3v3H1z'/%3E%3C/g%3E%3Cg fill='%230b1b3a'%3E%3Cpath d='M2 2h1v1H2z M6 2h1v1H6z M2 6h1v1H2z'/%3E%3C/g%3E%3Crect x='5' y='5' width='1' height='1' fill='%23fff'/%3E%3Crect x='7' y='7' width='1' height='1' fill='%23fff'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="app-header">
+        <h1>Port Authentication</h1>
+        <p class="subtitle">Offline challenge &amp; response</p>
+    </header>
+
+    <main>
+        <!-- The two buttons. Complete starts disabled. -->
+        <section class="card">
+            <div class="actions">
+                <button type="button" id="initiate">Initiate authentication</button>
+                <button type="button" id="complete" disabled>Complete authentication</button>
+            </div>
+            <p id="status" class="status">Ready.</p>
+        </section>
+
+        <!-- Step 1 output: the challenge, shown only as a QR code. -->
+        <section id="challenge-panel" class="card" hidden>
+            <h2>Challenge</h2>
+            <div id="challenge-qr" class="qr-box"></div>
+            <p class="hint">Have the ship scan this code.</p>
+        </section>
+
+        <!-- Step 2: the camera scanner. -->
+        <section id="scanner-panel" class="card" hidden>
+            <h2>Scan the response</h2>
+            <div class="video-box">
+                <video id="scanner-video" playsinline muted></video>
+            </div>
+            <button type="button" id="cancel-scan" class="ghost">Stop scanner</button>
+        </section>
+
+        <!-- Final verdict. -->
+        <section id="result-panel" class="card" hidden>
+            <p id="result" class="result"></p>
+            <pre id="result-detail" class="detail" hidden></pre>
+        </section>
+    </main>
+
+    <!-- Vendored from github.com/hamzaharoon1314/qr-toolkit -->
+    <script src="js/qrcode.js"></script>
+    <script src="js/qrcode_UTF8.js"></script>
+    <script src="js/jsQR.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

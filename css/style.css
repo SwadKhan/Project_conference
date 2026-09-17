@@ -1,0 +1,168 @@
+/* Port authentication page */
+
+:root {
+    --ink: #111827;
+    --muted: #6b7280;
+    --line: #d7dbe2;
+    --accent: #1d4ed8;
+    --ok: #067647;
+    --error: #b42318;
+    --pending: #b54708;
+    --bg: #f3f4f6;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0 16px 48px;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.app-header {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 28px 0 18px;
+}
+
+.app-header h1 { margin: 0; font-size: 20px; letter-spacing: -0.01em; }
+.subtitle { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+
+.card {
+    max-width: 560px;
+    margin: 0 auto 20px;
+    padding: 22px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+}
+
+.card h2 {
+    margin: 0 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+}
+
+/* --- Buttons ------------------------------------------------------- */
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+button {
+    padding: 11px 18px;
+    font: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover:not(:disabled) { background: #1740ad; }
+
+button:disabled {
+    background: #e5e7eb;
+    color: #9aa4b8;
+    cursor: not-allowed;
+}
+
+button.ghost {
+    margin-top: 14px;
+    color: var(--accent);
+    background: #fff;
+    border: 1px solid var(--line);
+}
+
+button.ghost:hover { background: #eef2ff; }
+
+/* --- Status line --------------------------------------------------- */
+
+.status {
+    margin: 16px 0 0;
+    padding-left: 18px;
+    position: relative;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.status::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.status-ok { color: var(--ok); }
+.status-error { color: var(--error); font-weight: 600; }
+.status-pending { color: var(--pending); }
+
+.hint { margin: 14px 0 0; color: var(--muted); font-size: 12px; }
+
+/* --- Challenge QR -------------------------------------------------- */
+
+.qr-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+}
+
+.qr-box img {
+    display: block;
+    width: 240px;
+    max-width: 100%;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+/* --- Camera -------------------------------------------------------- */
+
+.video-box {
+    position: relative;
+    overflow: hidden;
+    background: #000;
+    border-radius: 8px;
+    aspect-ratio: 4 / 3;
+}
+
+#scanner-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Result -------------------------------------------------------- */
+
+.result { margin: 0; font-size: 17px; font-weight: 700; }
+.result-ok { color: var(--ok); }
+.result-error { color: var(--error); }
+
+.detail {
+    margin: 14px 0 0;
+    padding: 10px;
+    overflow-x: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11px;
+    color: #374151;
+    background: #f9fafb;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+}
